@@ -90,3 +90,29 @@ print("Algorithm selction result: ", check_unique_species(id, 10, probability))
 #         return count/time
 
 # print(test(100, 5))
+
+def compare(str1, str2, k, hash_range, time):
+        same = 0
+        for seed in range(time):
+                min1 = hash_min(str1, k, seed, hash_range)
+                min2 = hash_min(str2, k, seed, hash_range)
+                # print("min1",min1,"min2",min2)
+                if (min1 == min2):
+                        same += 1
+        return same / time
+
+def jaccard_similarity(str1, str2, k):
+        set1 = set()
+        set2 = set()
+        for i in range(len(str1) - k + 1):
+                set1.add(str1[i : i + k])
+        for j in range(len(str2) - k + 1):
+                set2.add(str2[j : j + k])
+        intersection = set1.intersection(set2)
+        union = set1.union(set2)
+        # print(union)
+        # print(intersection)
+        return len(intersection) / len(union)
+
+# print(jaccard_similarity(dna1, dna2, 3))
+# print(compare(dna1, dna2, 3, 1000000000, 10000))
