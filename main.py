@@ -3,6 +3,8 @@ from sklearn.utils.murmurhash import murmurhash3_32
 import sys
 import random
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 record = list(SeqIO.parse("HiSeq_accuracy.fa", "fasta"))
 
@@ -79,8 +81,8 @@ def check_unique_species(id, pick_num, probability):
         #print(unique)
         return len(unique)
 
-print("Random selction result: ", random_unique(id, 10))
-print("Algorithm selction result: ", check_unique_species(id, 10, probability))
+# print("Random selction result: ", random_unique(id, 10))
+# print("Algorithm selction result: ", check_unique_species(id, 10, probability))
 
 # def test(time, pick_num):
 #         count = 0
@@ -90,6 +92,7 @@ print("Algorithm selction result: ", check_unique_species(id, 10, probability))
 #         return count/time
 
 # print(test(100, 5))
+
 
 def compare(str1, str2, k, hash_range, time):
         same = 0
@@ -116,3 +119,15 @@ def jaccard_similarity(str1, str2, k):
 
 # print(jaccard_similarity(dna1, dna2, 3))
 # print(compare(dna1, dna2, 3, 1000000000, 10000))
+
+# Compute Jaccard similarity for all pairs of sequences
+n = len(lst)
+similarity_matrix = np.zeros((n, n))
+for i in range(n):
+    for j in range(i + 1, n):
+        similarity_matrix[i][j] = jaccard_similarity(lst[i], lst[j], k=5)
+        similarity_matrix[j][i] = similarity_matrix[i][j]
+
+# Plot heatmap using seaborn
+sns.heatmap(similarity_matrix, cmap='coolwarm', center=0.5)
+plt.show()
