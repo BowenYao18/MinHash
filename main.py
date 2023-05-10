@@ -120,14 +120,27 @@ def jaccard_similarity(str1, str2, k):
 # print(jaccard_similarity(dna1, dna2, 3))
 # print(compare(dna1, dna2, 3, 1000000000, 10000))
 
-# Compute Jaccard similarity for all pairs of sequences
-n = len(lst)
-similarity_matrix = np.zeros((n, n))
-for i in range(n):
-    for j in range(i + 1, n):
-        similarity_matrix[i][j] = jaccard_similarity(lst[i], lst[j], k=5)
-        similarity_matrix[j][i] = similarity_matrix[i][j]
+def jaccard_matrix(lst, k):
+        '''Return the jaccard distance matrix for all sequence. '''
+        length = len(lst)
+        jaccard_mat = np.zeros((length, length))
+        for i in range(length):
+                for j in range(i, length):
+                        sim = jaccard_similarity(lst[i], lst[j], k)
+                        jaccard_mat[i, j] = sim
+                        jaccard_mat[j, i] = sim
+        return jaccard_mat
 
-# Plot heatmap using seaborn
-sns.heatmap(similarity_matrix, cmap='coolwarm', center=0.5)
-plt.show()
+jaccard_mat = jaccard_matrix(lst, k=5)
+
+fig, ax = plt.subplots()
+heatmap = ax.pcolor(jaccard_mat, cmap=plt.cm.Blues)
+plt.colorbar(heatmap)
+
+# Show values in each cell
+for i in range(len(id)):
+    for j in range(len(id)):
+        value = "{:.2f}".format(jaccard_mat[i, j])
+
+plt.tight_layout()
+plt.savefig("heatmap.png")
